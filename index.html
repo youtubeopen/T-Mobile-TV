@@ -76,9 +76,11 @@ body{
     display:none;
     align-items:center;
     justify-content:center;
+    text-align:center;
     font-size:30px;
     border-radius:12px;
     z-index:10;
+    padding:20px;
 }
 
 .sidebar{
@@ -123,6 +125,9 @@ body{
         <div class="player">
             <div class="video-wrapper">
                 <div class="overlay" id="overlay">Trocando de canal...</div>
+                <div class="overlay" id="offlineOverlay">
+                    Canal temporariamente indisponível
+                </div>
 
                 <video
                     id="my-video"
@@ -152,6 +157,7 @@ body{
 
 <script>
 const overlay = document.getElementById("overlay");
+const offlineOverlay = document.getElementById("offlineOverlay");
 
 const channels = {
     nickonline: "https://x1co.com.br/hls/stream.m3u8",
@@ -168,17 +174,29 @@ function loadChannel(url) {
         src: url,
         type: "application/x-mpegURL"
     });
-    player.play();
+
+    player.play().catch(() => {
+        offlineOverlay.style.display = "flex";
+    });
 }
 
 function changeChannel(channelName){
     overlay.style.display = "flex";
+    offlineOverlay.style.display = "none";
 
     setTimeout(() => {
         loadChannel(channels[channelName]);
         overlay.style.display = "none";
     }, 1500);
 }
+
+player.on('ended', function () {
+    offlineOverlay.style.display = "flex";
+});
+
+player.on('error', function () {
+    offlineOverlay.style.display = "flex";
+});
 
 loadChannel(channels.nickonline);
 </script>
