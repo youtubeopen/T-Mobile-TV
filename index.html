@@ -13,7 +13,7 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial, sans-serif;
+    font-family:Arial,sans-serif;
 }
 
 body{
@@ -55,7 +55,6 @@ body{
     box-shadow:0 0 20px rgba(226,0,116,.15);
 }
 
-/* 16:9 */
 .video-wrapper{
     position:relative;
     width:100%;
@@ -104,6 +103,7 @@ body{
     border-radius:12px;
     cursor:pointer;
     transition:.3s;
+    margin-bottom:10px;
 }
 
 .channel:hover{
@@ -137,8 +137,13 @@ body{
         <div class="sidebar">
             <div class="channels">
                 <h2>Canais</h2>
-                <div class="channel" onclick="changeChannel()">
+
+                <div class="channel" onclick="changeChannel('nickonline')">
                     001 • NickOnline
+                </div>
+
+                <div class="channel" onclick="changeChannel('ntoons')">
+                    002 • NToons Brasil
                 </div>
             </div>
         </div>
@@ -148,29 +153,34 @@ body{
 <script>
 const overlay = document.getElementById("overlay");
 
+const channels = {
+    nickonline: "https://x1co.com.br/hls/stream.m3u8",
+    ntoons: "https://stmv2.srvif.com/nicktoons/nicktoons/playlist.m3u8"
+};
+
 const player = videojs('my-video', {
     autoplay: true,
     controls: true
 });
 
-function loadChannel() {
+function loadChannel(url) {
     player.src({
-        src: "https://x1co.com.br/hls/stream.m3u8",
+        src: url,
         type: "application/x-mpegURL"
     });
     player.play();
 }
 
-function changeChannel(){
+function changeChannel(channelName){
     overlay.style.display = "flex";
 
     setTimeout(() => {
-        loadChannel();
+        loadChannel(channels[channelName]);
         overlay.style.display = "none";
     }, 1500);
 }
 
-loadChannel();
+loadChannel(channels.nickonline);
 </script>
 
 </body>
