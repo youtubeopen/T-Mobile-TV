@@ -55,16 +55,23 @@ body{
     box-shadow:0 0 20px rgba(226,0,116,.15);
 }
 
-.video-js{
+/* 16:9 */
+.video-wrapper{
+    position:relative;
     width:100%;
-    height:500px;
+    aspect-ratio:16/9;
+}
+
+.video-js{
+    width:100% !important;
+    height:100% !important;
     border-radius:12px;
     overflow:hidden;
 }
 
 .overlay{
     position:absolute;
-    inset:15px;
+    inset:0;
     background:rgba(0,0,0,0.85);
     color:white;
     display:none;
@@ -114,16 +121,17 @@ body{
 
     <div class="container">
         <div class="player">
-            <div class="overlay" id="overlay">Trocando de canal...</div>
+            <div class="video-wrapper">
+                <div class="overlay" id="overlay">Trocando de canal...</div>
 
-            <video
-                id="my-video"
-                class="video-js vjs-default-skin"
-                controls
-                autoplay
-                preload="auto"
-                data-setup="{}">
-            </video>
+                <video
+                    id="my-video"
+                    class="video-js vjs-default-skin"
+                    controls
+                    autoplay
+                    preload="auto">
+                </video>
+            </div>
         </div>
 
         <div class="sidebar">
@@ -142,9 +150,7 @@ const overlay = document.getElementById("overlay");
 
 const player = videojs('my-video', {
     autoplay: true,
-    controls: true,
-    responsive: true,
-    fluid: false
+    controls: true
 });
 
 function loadChannel() {
